@@ -1,0 +1,15 @@
+.container {
+    display: flex;
+}
+
+.contentForm {
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 10px;
+}
+
+.preview {
+    width: 80%;
+}
