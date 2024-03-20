@@ -11,8 +11,6 @@ export default function ShowContent () {
     const { id } = useParams();
     useEffect(() => {
         let content = getContentById(id);
-        // content.updatedAt = content?.updatedAt?.toString();
-        // content.createdAt = content?.createdAt?.toString();
         setContent(content);
     }, [id, getContentById])
 

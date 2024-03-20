@@ -9,7 +9,7 @@ import styles from './admin.module.css';
 export default function Admin () {
 
     //TODO: fazer a logica dos cards
-    const {user} = useAuth();
+    const { user } = useAuth();
     const dialog = useRef();
     const [displayName, setDisplayName] = useContext(useName);
     const [displayNameInput, setDisplayNameInput] = useState("");

@@ -22,6 +22,8 @@ export default function Form({ formObj }) {
     const [backModuleSelected, setBackModuleSelect] = useState("");
     const [backTitleSelected, setBackTitleSelect] = useState("");
 
+    const [htmlContent, setHtmlContent] = useState("");
+
     const { getLanguages, getModules, getTitles } = contentsFunctions(contents);
 
     const [existsLanguage, setExistsLanguage] = useState(true);
@@ -31,44 +33,64 @@ export default function Form({ formObj }) {
     useEffect(() => {
         const fetchedLanguages = getLanguages();
         setLanguages(fetchedLanguages);
-        if (fetchedLanguages.length > 0) {
-            setLanguageSelect(fetchedLanguages[0]); // Define a primeira linguagem como selecionada por padrão
+        if (fetchedLanguages?.length > 0) {
+            if (formObj) {
+                setLanguageSelect(formObj?.language);
+                setHtmlContent(formatCode(formObj?.htmlContent, false));
+            } else {
+                setLanguageSelect(fetchedLanguages[0]);
+            }
             setExistsLanguage(true);
         }
-    }, [contents]); // Atualize sempre que o conteúdo for alterado
+    }, [contents, formObj]); // Atualize sempre que o conteúdo for alterado
 
     useEffect(() => {
         if (languageSelected) {
             const fetchedModules = getModules(languageSelected);
             setModules(fetchedModules);
             setBackModules(fetchedModules);
-            if (fetchedModules.length > 0) {
-                setModuleSelect(fetchedModules[0]); // Define o primeiro módulo como selecionado por padrão
-                setBackModuleSelect(fetchedModules[0]);
+            if (fetchedModules?.length > 0) {
+                setModuleSelect(formObj?.module ?? fetchedModules[0]); // Define o primeiro módulo como selecionado por padrão
+                const splittedBackPage = formObj?.backPage?.split('/');
+                const backModule = splittedBackPage?.[splittedBackPage?.length - 2];
+                if (backModule?.length > 0) {
+                    setBackModuleSelect(backModule);
+                } else {
+                    setBackModuleSelect(fetchedModules[0]);
+                }
             }
         }
     }, [languageSelected]); // Atualize sempre que a linguagem selecionada for alterada
 
+    // Novo useEffect para carregar os títulos anteriores quando a linguagem selecionada mudar
+    useEffect(() => {
+        if (backModules?.length > 0 && backModuleSelected && languageSelected) {
+            const fetchedBackTitles = getTitles(languageSelected, backModuleSelected);
+            // separe o module do title no formObj.backPage com o formato '/conteudos/language/module/title'
+            
+            setBackTitles(fetchedBackTitles);
+            if (fetchedBackTitles?.length > 0) {
+                setBackTitleSelect(fetchedBackTitles[0]);
+            }
+        }
+    }, [languageSelected]); // Atualize sempre que a linguagem selecionada for alterada
+    
     useEffect(() => {
         if (backModuleSelected) {
             const fetchedBackTitles = getTitles(languageSelected, backModuleSelected);
             setBackTitles(fetchedBackTitles);
             if (fetchedBackTitles.length > 0) {
-                setBackTitleSelect(fetchedBackTitles[0]);
+                const splittedBackPage = formObj?.backPage?.split('/');
+                const backTitle = splittedBackPage?.[splittedBackPage?.length - 1];
+                if (backTitle?.length > 0) {
+                    setBackTitleSelect(backTitle);
+                } else {
+                    setBackTitleSelect(fetchedBackTitles[0]);
+                }
             }
         }
     }, [backModuleSelected]);
     
-    // Novo useEffect para carregar os títulos anteriores quando a linguagem selecionada mudar
-    useEffect(() => {
-        if (backModules.length > 0 && backModuleSelected && languageSelected) {
-            const fetchedBackTitles = getTitles(languageSelected, backModuleSelected);
-            setBackTitles(fetchedBackTitles);
-            if (fetchedBackTitles.length > 0) {
-                setBackTitleSelect(fetchedBackTitles[0]);
-            }
-        }
-    }, [languageSelected]); // Atualize sempre que a linguagem selecionada for alterada
 
     const dialog = useRef();
 
