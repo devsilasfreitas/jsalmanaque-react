@@ -3,7 +3,7 @@ export function formatCode(text, convertOrDesconvert) {
     let replacement
     let regex
     if (convertOrDesconvert) {
-      regex = /<code (\w+)>([\s\S]*?)<\/code>/g;
+      regex = /<code (\w+)>\n([\s\S]*?)<\/code>/g;
       replacement = (match, language, content) => {
             const modifiedContent = content.replace(/</g, '&lt;').replace(/>/g, '&gt;');
             return `<pre><code class="language-${language}">${modifiedContent}</code></pre>`;

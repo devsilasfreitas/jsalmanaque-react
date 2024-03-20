@@ -1,5 +1,8 @@
+import styles from './index.module.css';
+import "highlight.js/styles/github-dark.min.css";
+
+import hljs from "highlight.js";
 import { useState, useRef, useEffect } from "react";
-import styles from './index.module.css'
 import { useContents } from "../../contexts/ContentsContext";
 import { contentsFunctions } from "../../functions/contentsFunctions";
 import { sendForm } from "../../functions/sendForm";
@@ -90,6 +93,10 @@ export default function Form({ formObj }) {
             }
         }
     }, [backModuleSelected]);
+
+    useEffect(() => {
+        hljs.highlightAll();
+    }, [htmlContent]);
     
 
     const dialog = useRef();
@@ -204,17 +211,18 @@ export default function Form({ formObj }) {
                 </label>
 
                 <label className={styles.label} htmlFor="Conteúdo HTML">Conteúdo HTML
-                    <textarea className={styles.textarea} name="htmlContent" cols="30" rows="20" defaultValue={formatCode(formObj?.htmlContent, false)}></textarea>
+                    <textarea className={styles.textarea} name="htmlContent" cols="30" rows="20" value={htmlContent} onChange={(ev) => setHtmlContent(ev.target.value)}></textarea>
                 </label>
                 
 
                 
                 <button type="reset">Resetar</button>
-                <button type="button">Preview</button>
                 <input type="submit" value="Postar" />
             </form>
+
             <hr className={styles.hr} />
-            <div id="preview" className={styles.preview} dangerouslySetInnerHTML={{__html: formatCode(formObj?.htmlContent, false)}}></div>
+
+            <div id="preview" className={styles.preview} dangerouslySetInnerHTML={{__html: formatCode(htmlContent, true)}}></div>
         </div>
     )
 }
