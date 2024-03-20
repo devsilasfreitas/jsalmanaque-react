@@ -1,3 +1,6 @@
+import "highlight.js/styles/github-dark.min.css";
+
+import hljs from "highlight.js";
 import { Link, useParams } from "react-router-dom"
 import {useContents} from "../../contexts/ContentsContext"
 import { useEffect, useState } from "react";
@@ -14,6 +17,10 @@ export default function Content () {
         setContent(content);
     }, [params, getContentByPagePath]);
 
+    useEffect(() => {
+        hljs.highlightAll();
+    }, [content]);
+
     return (
         <>
             <Link to={content?.backPage}>Pagina anterior</Link>
@@ -22,7 +29,7 @@ export default function Content () {
             <main dangerouslySetInnerHTML={{__html: `<style>
                 ${content?.cssContent}
             </style>
-            ${content?.htmlContent}`}}></main>
+            ${formatCode(content?.htmlContent, true)}`}}></main>
         </>
     )
 }
