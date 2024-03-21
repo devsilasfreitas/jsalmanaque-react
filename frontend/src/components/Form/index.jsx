@@ -2,13 +2,14 @@ import styles from './index.module.css';
 import "highlight.js/styles/github-dark.min.css";
 
 import hljs from "highlight.js";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import { useContents } from "../../contexts/ContentsContext";
 import { contentsFunctions } from "../../functions/contentsFunctions";
 import { sendForm } from "../../functions/sendForm";
 import { useAuth } from "../../contexts/UserContext";
 import { useParams } from "react-router-dom";
 import { formatCode } from "../../functions/formatCode";
+import { CreateModalContext } from "../../layouts/AdminLayout";
 
 export default function Form({ formObj }) {
     const form = useRef();
@@ -32,6 +33,8 @@ export default function Form({ formObj }) {
     const [existsLanguage, setExistsLanguage] = useState(true);
     const [existsModule, setExistsModule] = useState(true);
     const [customCss, setCustomCss] = useState(false);
+
+    const { createModal } = useContext(CreateModalContext);
 
     useEffect(() => {
         const fetchedLanguages = getLanguages();
@@ -97,9 +100,6 @@ export default function Form({ formObj }) {
     useEffect(() => {
         hljs.highlightAll();
     }, [htmlContent]);
-    
-
-    const dialog = useRef();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -110,9 +110,9 @@ export default function Form({ formObj }) {
             if (key === 'keyWords') data[key] = value.split(',');
         });
         await sendForm(data, user?.displayName, id).then(() => {
-            id ? alert('Conteúdo atualizado com sucesso!') : alert('Conteúdo criado com sucesso!');
+            id ? createModal('success', 'Conteúdo atualizado!', 'Conteúdo atualizado com sucesso!') : createModal('success', 'Conteúdo criado!', 'Conteúdo criado com sucesso!');
     }).catch(() => {
-        alert('Erro ao criar o conteúdo. Tente novamente mais tarde.');
+        createModal('error', 'Erro!', `Erro ao atualizar o conteúdo: ${error.message}`);
     });
     }
 

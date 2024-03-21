@@ -34,10 +34,13 @@ export const ContentsContextProvider = ({children}) => {
 
     useEffect (() => {
         onSnapshot(collection(db, 'contents'), (snapshot) => {
-            if (snapshot.docs.length > 0) 
+            if (snapshot.docs.length > 0) {
                 setContents(
                     snapshot.docs.map((content) => ({...content.data(), id: content.id}))
                 );
+            } else {
+                setContents([]);
+            }
         });
     }, []);
 

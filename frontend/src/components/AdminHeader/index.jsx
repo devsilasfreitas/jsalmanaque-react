@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import styles from './index.module.css';
 import { auth } from "../../config/firebase";
+import { EditOutlined } from "@ant-design/icons";
 
 export default function AdminHeader ({displayName}) {
     const navigate = useNavigate();
@@ -10,9 +11,12 @@ export default function AdminHeader ({displayName}) {
 
     return (
         <header className={styles.header}>
-            <Link to='/admin' style={{color: 'white', textDecoration: 'none'}}>
-                <h1>Painel do Admin {displayName}</h1>
-            </Link>
+            <div className={styles.nameContainer}>
+                <Link to='/admin' style={{color: 'white', textDecoration: 'none'}}>
+                    <h1>Painel do Admin {displayName}</h1>
+                </Link>
+                <EditOutlined className={styles.editIcon}/>
+            </div>
                 
             <div className={styles.buttonsContainer}>
                 <Link to='/admin/conteudos'>

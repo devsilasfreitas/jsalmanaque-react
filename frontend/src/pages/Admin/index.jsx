@@ -4,15 +4,15 @@ import { updateProfile } from "firebase/auth";
 import { useName } from "../../layouts/AdminLayout";
 import { contentsFunctions } from "../../functions/contentsFunctions";
 import { useContents } from "../../contexts/ContentsContext";
+import { CreateModalContext } from "../../layouts/AdminLayout";
+
 import styles from './admin.module.css';
 
 export default function Admin () {
 
     //TODO: fazer a logica dos cards
     const { user } = useAuth();
-    const dialog = useRef();
     const [displayName, setDisplayName] = useContext(useName);
-    const [displayNameInput, setDisplayNameInput] = useState("");
     const {contents} = useContents();
     const [languages, setLanguages] = useState(0);
     const [modules, setModules] = useState(0);
@@ -29,36 +29,22 @@ export default function Admin () {
         setTitles(titles);
     }, [contents]);
 
-    useEffect(() => setDisplayName(displayName), [])
+    const { openNotificationWithIcon, showEditDisplayName } = useContext(CreateModalContext);
 
-    const onClick = () => {
+    useEffect(() => {
+        setDisplayName(displayName);
+        displayName && openNotificationWithIcon("info", "Bem vindo!", `Bem vindo novamente admin ${displayName}!`);
+    }, [])
+
+    const onClick = (displayNameInput) => {
         updateProfile(user, {displayName: displayNameInput}).then(() => {
-            setDisplayName(user.displayName);
+            window.location.reload();
         });
     }
 
     return (
         <>
-            <dialog ref={dialog}  className={styles.dialog}>
-                {dialog.current?.showModal()}
-                {!displayName ? (
-                    <form>
-                        <label>
-                            Insira seu nome: 
-                            <input type="text" value={displayNameInput} onChange={(ev) => setDisplayNameInput(ev.target.value)} />
-                        </label>
-                        <button onClick={(ev) => {
-                            ev.preventDefault();
-                            onClick();
-                        }}>Enviar</button>
-                    </form>
-                ) : (
-                    <>
-                        <h3>Olá {user.displayName}!</h3>
-                        <button onClick={() => dialog.current.close()}>Fechar</button>
-                    </>
-                )}
-            </dialog>
+            {!displayName && showEditDisplayName(null, onClick)}
             <div className={styles.menu}>
                 <div className={styles.box}>
                     <h3 className={styles.title}>LINGUAGENS</h3>

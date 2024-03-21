@@ -20,6 +20,7 @@ export const sendForm = async (formObj, displayName, id) => {
     form.module = formObj.module;
     form.title = formObj.title;
     form.cssContent = formObj?.cssContent ? formObj.cssContent : "";
+    form.nextPage = null;
 
     if (id) {
         const oldPage = await getDoc(doc(db, 'contents', id));

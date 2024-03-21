@@ -1,7 +1,7 @@
 import {  getDocs, collection, where, query, updateDoc, doc } from "firebase/firestore";
 import { db } from "../config/firebase";
 
-export const updateOrderPages = async (newPage, deleteOrEditIsTrue) =>{
+export const updateOrderPages = async (newPage, deleteOrEditIsTrue) => {
     if (!deleteOrEditIsTrue) {
         const nextTemp = await getDocs(query(collection(db, 'contents'), where('language', '==', newPage.language), where('backPage', '==', newPage.backPage)))
         let next
@@ -51,6 +51,7 @@ export const updateOrderPages = async (newPage, deleteOrEditIsTrue) =>{
             next = doc.data()
             next.id = doc.id
         });
+
         if (newPage.nextPage) {
     
             if (!newPage.backPage) {
