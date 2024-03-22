@@ -2,12 +2,15 @@ import { Link, useNavigate } from "react-router-dom";
 import styles from './index.module.css';
 import { auth } from "../../config/firebase";
 import { EditOutlined } from "@ant-design/icons";
+import { useContext } from "react";
+import { CreateModalContext } from "../../layouts/AdminLayout";
 
 export default function AdminHeader ({displayName}) {
     const navigate = useNavigate();
     const logout = () => {
         auth.signOut().then(() => navigate("/login"));
     }
+    const { showEditDisplayName } = useContext(CreateModalContext);
 
     return (
         <header className={styles.header}>
@@ -15,7 +18,7 @@ export default function AdminHeader ({displayName}) {
                 <Link to='/admin' style={{color: 'white', textDecoration: 'none'}}>
                     <h1>Painel do Admin {displayName}</h1>
                 </Link>
-                <EditOutlined className={styles.editIcon}/>
+                <EditOutlined className={styles.editIcon} onClick={() => showEditDisplayName(displayName)} />
             </div>
                 
             <div className={styles.buttonsContainer}>

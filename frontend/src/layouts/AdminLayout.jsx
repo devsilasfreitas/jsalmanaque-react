@@ -3,6 +3,7 @@ import AdminHeader from "../components/AdminHeader";
 import { useAuth } from "../contexts/UserContext";
 import { createContext, useState, useRef } from "react";
 import { Button, Modal, notification } from "antd";
+import { updateProfile } from "firebase/auth";
 
 export const useName = createContext();
 
@@ -38,20 +39,24 @@ export default function AdminLayout () {
     api[type](configNotification(message, description));
     };
 
+    const onClick = (newDisplayName) => {
+        updateProfile(user, {displayName: newDisplayName}).then(() => window.location.reload());
+    }
+
     const createModal = (type, title, content, otherProps) => {
-        modal[type](configModal(title, content,otherProps));
+        modal[type](configModal(title, content, otherProps));
     };
 
-    const showEditDisplayName = (displayName, onClick) => {
-        const displayNameInput = useRef();
+    const displayNameInput = useRef();
+    const showEditDisplayName = (displayName) => {
         if (displayName) {
-            createModal('confirm', 'Editar Nome', (<><input type="text" value={displayNameInput} onChange={(e) => setDisplayName(e.target.value)} /></>), {
+            createModal('confirm', 'Editar Nome', (<><input type="text" defaultValue={displayName} ref={displayNameInput} /></>), {
                 footer: (_) => (
                     <Button type="primary" onClick={() => onClick(displayNameInput.current?.value)}>Enviar</Button>
                 ),
             });
         } else {
-            createModal('confirm', 'Criar Nome', (<><input type="text" minLength={2} defaultValue={displayName} ref={displayNameInput} /></>), {
+            createModal('confirm', 'Criar Nome', (<><input type="text" minLength={2} ref={displayNameInput} /></>), {
                 footer: (_) => (
                     <Button type="primary" onClick={() => onClick(displayNameInput.current?.value)}>Enviar</Button>
                 ),

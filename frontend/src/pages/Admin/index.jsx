@@ -11,7 +11,6 @@ import styles from './admin.module.css';
 export default function Admin () {
 
     //TODO: fazer a logica dos cards
-    const { user } = useAuth();
     const [displayName, setDisplayName] = useContext(useName);
     const {contents} = useContents();
     const [languages, setLanguages] = useState(0);
@@ -34,17 +33,11 @@ export default function Admin () {
     useEffect(() => {
         setDisplayName(displayName);
         displayName && openNotificationWithIcon("info", "Bem vindo!", `Bem vindo novamente admin ${displayName}!`);
-    }, [])
-
-    const onClick = (displayNameInput) => {
-        updateProfile(user, {displayName: displayNameInput}).then(() => {
-            window.location.reload();
-        });
-    }
+    }, []);
 
     return (
         <>
-            {!displayName && showEditDisplayName(null, onClick)}
+            {!displayName && showEditDisplayName(null)}
             <div className={styles.menu}>
                 <div className={styles.box}>
                     <h3 className={styles.title}>LINGUAGENS</h3>
