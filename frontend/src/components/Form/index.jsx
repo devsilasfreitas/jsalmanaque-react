@@ -2,6 +2,7 @@ import styles from './index.module.css';
 import "highlight.js/styles/github-dark.min.css";
 
 import hljs from "highlight.js";
+import Editor from "@monaco-editor/react"
 import { useState, useRef, useEffect, useContext } from "react";
 import { useContents } from "../../contexts/ContentsContext";
 import { contentsFunctions } from "../../functions/contentsFunctions";
@@ -27,6 +28,7 @@ export default function Form({ formObj }) {
     const [backTitleSelected, setBackTitleSelect] = useState("");
 
     const [htmlContent, setHtmlContent] = useState("");
+    const [cssContent, setCssContent] = useState("");
 
     const { getLanguages, getModules, getTitles } = contentsFunctions(contents);
 
@@ -43,6 +45,10 @@ export default function Form({ formObj }) {
             if (formObj) {
                 setLanguageSelect(formObj?.language);
                 setHtmlContent(formatCode(formObj?.htmlContent, false));
+                if (formObj?.cssContent?.length > 0) {
+                    setCustomCss(true);
+                    setCssContent(formObj?.cssContent);
+                }
             } else {
                 setLanguageSelect(fetchedLanguages[0]);
             }
@@ -83,7 +89,7 @@ export default function Form({ formObj }) {
     
     useEffect(() => {
         if (backModuleSelected) {
-            const fetchedBackTitles = getTitles(languageSelected, backModuleSelected);
+            const fetchedBackTitles = getTitles(languageSelected, backModuleSelected, formObj?.title);
             setBackTitles(fetchedBackTitles);
             if (fetchedBackTitles.length > 0) {
                 const splittedBackPage = formObj?.backPage?.split('/');
@@ -91,7 +97,7 @@ export default function Form({ formObj }) {
                 if (backTitle?.length > 0) {
                     setBackTitleSelect(backTitle);
                 } else {
-                    setBackTitleSelect(fetchedBackTitles[0]);
+                    setBackTitleSelect("none");
                 }
             }
         }
@@ -99,7 +105,7 @@ export default function Form({ formObj }) {
 
     useEffect(() => {
         hljs.highlightAll();
-    }, [htmlContent]);
+    }, [htmlContent, cssContent]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -109,9 +115,11 @@ export default function Form({ formObj }) {
             if (key !== '' && value !== 'on') data[key] = value;
             if (key === 'keyWords') data[key] = value.split(',');
         });
+        data.htmlContent = htmlContent;
+        data.cssContent = cssContent;
         await sendForm(data, user?.displayName, id).then(() => {
             id ? createModal('success', 'Conteúdo atualizado!', 'Conteúdo atualizado com sucesso!') : createModal('success', 'Conteúdo criado!', 'Conteúdo criado com sucesso!');
-    }).catch(() => {
+    }).catch((error) => {
         createModal('error', 'Erro!', `Erro ao atualizar o conteúdo: ${error.message}`);
     });
     }
@@ -196,22 +204,27 @@ export default function Form({ formObj }) {
                 </label>
 
                 <label htmlFor="standardCss" className={styles.label}>
-                    <input type="radio" name="css" onChange={() => setCustomCss(false)} defaultChecked />
+                    <input type="radio" name="css" onChange={() => {
+                        setCustomCss(false);
+                        setCssContent("");
+                        }}
+                    />
                     CSS padrão (/style.css e ) 
                 </label>
                 <label htmlFor="customCss" className={styles.label}>
                     <input type="radio" name="css" onChange={() => setCustomCss(true)} />
                     Criar CSS
+                    <br />
                     {customCss && (
                         <label>
                             Conteúdo CSS
-                            <textarea className={styles.textarea} cols="30" rows="20" name="cssContent" defaultValue={formObj?.cssContent}></textarea>
+                            <Editor defaultLanguage="css" height="400px" options={{minimap: {enabled: false}, tabSize: 4}} width="100%" theme='vs-dark' name="cssContent" value={cssContent} onChange={(value) => setCssContent(value)} />
                         </label>
                     )}
                 </label>
 
                 <label className={styles.label} htmlFor="Conteúdo HTML">Conteúdo HTML
-                    <textarea className={styles.textarea} name="htmlContent" cols="30" rows="20" value={htmlContent} onChange={(ev) => setHtmlContent(ev.target.value)}></textarea>
+                    <Editor defaultLanguage="html" options={{minimap: {enabled: false}, tabSize: 4}} height="400px" width="100%" theme='vs-dark' name="htmlContent" value={htmlContent} onChange={(value) => setHtmlContent(value)} />
                 </label>
                 
 
@@ -222,7 +235,7 @@ export default function Form({ formObj }) {
 
             <hr className={styles.hr} />
 
-            <div id="preview" className={styles.preview} dangerouslySetInnerHTML={{__html: formatCode(htmlContent, true)}}></div>
+            <div id="preview" className={styles.preview} dangerouslySetInnerHTML={{__html: `<style>${cssContent}</style>${formatCode(htmlContent, true)}`}}></div>
         </div>
     )
 }

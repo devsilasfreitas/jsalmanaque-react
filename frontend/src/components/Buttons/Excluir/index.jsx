@@ -50,7 +50,7 @@ export default function Excluir ({id}) {
             okButtonProps={{ loading: confirmLoading }}
             onCancel={handleCancel}
             >
-            <Button danger onClick={showPopconfirm} >
+            <Button danger style={{backgroundColor: "rgba(0,0,0,0)"}} onClick={showPopconfirm} >
                 Excluir
             </Button>
             </Popconfirm>

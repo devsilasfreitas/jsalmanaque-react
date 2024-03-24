@@ -21,13 +21,38 @@ export const ContentsContextProvider = ({children}) => {
         await deleteDoc(doc(db, 'contents', contentId)).catch(error => console.log(error));
     };
 
+    const getContentsSorted = useCallback((language) => {
+        const languageContents = contents?.filter((content) => content.language == language);
+        function findNextObject(currentNextPage) {
+            return languageContents.find(obj => obj.pagePath === currentNextPage);
+        }
+        
+        // Ordenando a lista de objetos
+        let orderedList = [];
+        let currentObject = languageContents?.find(obj => obj.backPage === null);
+        
+        while (currentObject) {
+            orderedList?.push(currentObject);
+            currentObject = findNextObject(currentObject.nextPage);
+        }
+
+        return orderedList.reduce((acc, obj) => {
+            const key = obj.module;
+            if (!acc[key]) acc[key] = [];
+            acc[key].push(obj);
+            return acc;
+        }, {});
+        
+    }, [contents]);
+
     const contextValue = useMemo(() => ({
             contents, 
             addContent: (content) => 
                 addDoc(collection(db, 'contents'), content),
             getContentById,
             getContentByPagePath,
-            removeContent
+            removeContent,
+            getContentsSorted,
         }),
         [contents, getContentById]
     );

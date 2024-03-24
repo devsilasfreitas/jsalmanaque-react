@@ -28,9 +28,12 @@ export const contentsFunctions = (contents) => {
         return modules;
     }
 
-    const getTitles = (language, module) => {
+    const getTitles = (language, module, title) => {
         const titles = [];
-        const titlesByModule = contents?.filter((content) => content.language == language).filter((content) => content.module == module);
+        let titlesByModule = contents?.filter((content) => content.language == language).filter((content) => content.module == module);
+        if (title) {
+            titlesByModule = titlesByModule?.filter((content) => content.title != title);
+        }
         titlesByModule?.map((content) => {
             if (!titles.includes(content.title)) titles.push(content.title);
         });
@@ -41,7 +44,7 @@ export const contentsFunctions = (contents) => {
     const getAllTitles = () => {
         const titles = [];
         contents?.map((content) => {
-            if (!titles.includes(content.title)) titles.push(content.title);
+            if (true) titles.push(content.title);
         });
         return titles;
     }

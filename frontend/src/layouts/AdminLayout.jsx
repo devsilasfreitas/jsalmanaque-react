@@ -4,6 +4,7 @@ import { useAuth } from "../contexts/UserContext";
 import { createContext, useState, useRef } from "react";
 import { Button, Modal, notification } from "antd";
 import { updateProfile } from "firebase/auth";
+import { updateUserName } from "../functions/updateUserName";
 
 export const useName = createContext();
 
@@ -40,7 +41,13 @@ export default function AdminLayout () {
     };
 
     const onClick = (newDisplayName) => {
-        updateProfile(user, {displayName: newDisplayName}).then(() => window.location.reload());
+        const oldDisplayName = user.displayName;
+        updateProfile(user, {displayName: newDisplayName}).then(() => {
+            updateUserName(oldDisplayName, newDisplayName);
+            setDisplayName(newDisplayName);
+            Modal.destroyAll();
+            createModal('success', 'Nome atualizado!', 'Nome atualizado com sucesso!');
+        }).catch((error) => createModal('error', 'Erro!', `Erro ao atualizar o nome: ${error.message}`));
     }
 
     const createModal = (type, title, content, otherProps) => {
@@ -69,7 +76,6 @@ export default function AdminLayout () {
             <CreateModalContext.Provider value={{createModal, openNotificationWithIcon, showEditDisplayName}}>
                 <AdminHeader displayName={displayName}/>
                 <main>
-
                     {notificationHolder}
                     <useName.Provider value={[displayName, setDisplayName]}>
                         <Outlet />

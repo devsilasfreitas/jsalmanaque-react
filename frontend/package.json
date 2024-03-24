@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.3.4",
+    "@monaco-editor/react": "^4.6.0",
     "antd": "^5.15.3",
     "firebase": "^10.9.0",
     "highlight.js": "^11.9.0",

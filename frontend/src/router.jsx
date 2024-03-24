@@ -42,7 +42,9 @@ export const Router = () => {
             <Route path="/" element={<Home />} />
             <Route path="/search" element={<Search />} />
             <Route path="/sobre" element={<Sobre />} />
-            <Route path="/conteudos/:language/:module/:title" element={<Content />} />
+            <Route path="/conteudos" element={<ContentLayout />}>
+                <Route path="/conteudos/:language/:module/:title" element={<Content />} />
+            </Route>
         </Route>
         <Route path='*' element={
             <>
