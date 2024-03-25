@@ -105,6 +105,7 @@ export default function Form({ formObj }) {
 
     useEffect(() => {
         hljs.highlightAll();
+        console.log(formatCode(htmlContent, true))
     }, [htmlContent, cssContent]);
 
     const handleSubmit = async (event) => {
@@ -235,7 +236,7 @@ export default function Form({ formObj }) {
 
             <hr className={styles.hr} />
 
-            <div id="preview" className={styles.preview} dangerouslySetInnerHTML={{__html: `<style>${cssContent}</style>${formatCode(htmlContent, true)}`}}></div>
+            <div id="preview" className={styles.preview} dangerouslySetInnerHTML={{__html: `<style>${cssContent}</style><main>${formatCode(htmlContent, true)}</main>`}}></div>
         </div>
     )
 }

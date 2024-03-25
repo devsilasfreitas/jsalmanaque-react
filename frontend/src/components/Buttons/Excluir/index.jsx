@@ -5,12 +5,15 @@ import { db } from "../../../config/firebase";
 import { Popconfirm, Button } from 'antd';
 import { useState, useContext } from "react";
 import { CreateModalContext } from "../../../layouts/AdminLayout";
+import { useNavigate } from "react-router-dom";
 
 export default function Excluir ({id}) {
     //TODO: trocar os notifications por modals
     const { removeContent } = useContents();
     const [open, setOpen] = useState(false);
     const [confirmLoading, setConfirmLoading] = useState(false);
+
+    const navigate = useNavigate();
 
     const { createModal } = useContext(CreateModalContext);
 
@@ -26,6 +29,7 @@ export default function Excluir ({id}) {
             removeContent(id).then(() => {
                 setConfirmLoading(false);
                 setOpen(false);
+                navigate("/admin/conteudos");
                 createModal('success', 'Excluído!', 'Conteúdo excluído com sucesso!');
             });
         } catch (error) {

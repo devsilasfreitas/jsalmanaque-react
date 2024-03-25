@@ -18,7 +18,7 @@ export default function ShowContent () {
         <>
             <section>
                 <h3>{content?.title}</h3>
-                <div>
+                <div style={{display: 'flex', gap: '5px'}}>
                     <Acessar pagePath={content?.pagePath} />
                     <Atualizar id={content?.id} />
                     <Excluir id={content?.id} />

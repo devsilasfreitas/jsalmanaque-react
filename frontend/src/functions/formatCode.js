@@ -15,6 +15,8 @@ export function formatCode(text, convertOrDesconvert) {
             return `<code ${language}>\n${modifiedContent}</code>`;
         }
     }
+    
+    console.log(text?.replace(regex, replacement));
   
     return text?.replace(regex, replacement);
 }
