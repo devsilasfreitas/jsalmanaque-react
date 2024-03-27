@@ -105,7 +105,6 @@ export default function Form({ formObj }) {
 
     useEffect(() => {
         hljs.highlightAll();
-        console.log(formatCode(htmlContent, true))
     }, [htmlContent, cssContent]);
 
     const handleSubmit = async (event) => {
@@ -225,7 +224,7 @@ export default function Form({ formObj }) {
                 </label>
 
                 <label className={styles.label} htmlFor="Conteúdo HTML">Conteúdo HTML
-                    <Editor defaultLanguage="html" options={{minimap: {enabled: false}, tabSize: 4}} height="400px" width="100%" theme='vs-dark' name="htmlContent" value={htmlContent} onChange={(value) => setHtmlContent(value)} />
+                    <Editor defaultLanguage="html" options={{minimap: {enabled: false}, tabSize: 4, lineNumbersMinChars: 3}} height="400px" width="100%" theme='vs-dark' name="htmlContent" value={htmlContent} onChange={(value) => setHtmlContent(value)} />
                 </label>
                 
 

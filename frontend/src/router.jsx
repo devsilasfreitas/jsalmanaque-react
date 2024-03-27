@@ -7,7 +7,7 @@ import Login from './pages/Login/';
 import AdminLayout from './layouts/AdminLayout';
 import Admin from './pages/Admin';
 import AdminContentLayout from './layouts/AdminContentLayout.jsx';
-import ContentLayout from './layouts/ContentLayout.jsx';
+import ContentLayout from './layouts/ContentLayout';
 import AllContents from './pages/Admin/AllContents/index.jsx';
 import ShowContent from './pages/Admin/AllContents/ShowContent/index.jsx';
 import NewContent from './pages/Admin/AllContents/NewContent/index.jsx';
@@ -42,9 +42,9 @@ export const Router = () => {
             <Route path="/" element={<Home />} />
             <Route path="/search" element={<Search />} />
             <Route path="/sobre" element={<Sobre />} />
-            <Route path="/conteudos" element={<ContentLayout />}>
-                <Route path="/conteudos/:language/:module/:title" element={<Content />} />
-            </Route>
+        </Route>
+        <Route path="/conteudos" element={<ContentLayout />}>
+            <Route path="/conteudos/:language/:module/:title" element={<Content />} />
         </Route>
         <Route path='*' element={
             <>

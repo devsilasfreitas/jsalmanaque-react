@@ -2,6 +2,7 @@ import {useContents} from "../../../contexts/ContentsContext"
 import Ver from "../../../components/Buttons/Ver"
 import Atualizar from "../../../components/Buttons/Atualizar"
 import Excluir from "../../../components/Buttons/Excluir"
+import { ExcluirTudo } from "../../../components/Buttons/ExcluirTudo";
 
 export default function AllContents () {
 
@@ -12,6 +13,7 @@ export default function AllContents () {
         <>
             
             <div>
+                <section style={{display: 'flex', justifyContent: 'flex-end', margin: '20px 50px'}}><ExcluirTudo /></section>
                 <table style={{borderCollapse: 'collapse', margin: '50px auto'}}>
                     <thead style={{backgroundColor: 'black', color: 'white', borderRadius: '10px'}}>
                         <tr>

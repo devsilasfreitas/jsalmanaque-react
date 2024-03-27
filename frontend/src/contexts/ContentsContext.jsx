@@ -24,7 +24,7 @@ export const ContentsContextProvider = ({children}) => {
     const getContentsSorted = useCallback((language) => {
         const languageContents = contents?.filter((content) => content.language == language);
         function findNextObject(currentNextPage) {
-            return languageContents.find(obj => obj.pagePath === currentNextPage);
+            return languageContents.find(obj => obj.pagePath === currentNextPage.nextPage);
         }
         
         // Ordenando a lista de objetos
@@ -32,8 +32,8 @@ export const ContentsContextProvider = ({children}) => {
         let currentObject = languageContents?.find(obj => obj.backPage === null);
         
         while (currentObject) {
-            orderedList?.push(currentObject);
-            currentObject = findNextObject(currentObject.nextPage);
+            orderedList.push(currentObject);
+            currentObject = findNextObject(currentObject);
         }
 
         return orderedList.reduce((acc, obj) => {

@@ -3,7 +3,7 @@ import { db } from "../config/firebase";
 
 export const updateOrderPages = async (newPage, deleteOrEditIsTrue) => {
     if (!deleteOrEditIsTrue) {
-        const nextTemp = await getDocs(query(collection(db, 'contents'), where('language', '==', newPage.language), where('backPage', '==', newPage.backPage)))
+        const nextTemp = await getDocs(query(collection(db, 'contents'), where('language', '==', newPage.language), where('backPage', '==', newPage.backPage), where('pagePath', '!=', newPage.pagePath)))
         let next
         nextTemp.forEach((doc) => {
             next = doc.data()
