@@ -1,15 +1,32 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/UserContext";
+import { Spin } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 
-export default function Home () {
-    const { isAuthenticated } = useAuth();
+export function Home () {
+    const { user } = useAuth();
     return (
         <>
             <h1>Seja bem vindo ao JSAlmanaque</h1>
-            {isAuthenticated ? (
-                <Link to="/admin">Ir para admin</Link>
-            ) : (
-                <Link to="/login">Ir para login</Link>
+            {user ? (
+                    <Link to="/admin">Ir para admin</Link>
+                ) : (
+                    user === undefined ? (
+                        <Spin
+                            indicator={
+                            <LoadingOutlined
+                                style={{
+                                fontSize: 24,
+                                }}
+                                spin
+                            />
+                            }
+                            fullscreen
+                            tip="Carregando..."
+                        />
+                    ) : (
+                        <Link to="/login">Ir para login</Link>
+                    )
             )}
         </>
     )

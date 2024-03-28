@@ -1,0 +1,21 @@
+.code-container {
+    background-color: #444444;
+    color: white;
+    padding: 7.5px 15px;
+    border-radius: 10px 10px 0 0;
+    text-align: end;
+}
+
+.copy-code {
+    background-color: transparent;
+    color: white;
+    border: 2px white solid;
+    border-radius: 5px;
+    padding: 5px 10px;
+}
+
+.copy-code:hover {
+    cursor: pointer;
+    background-color: white;
+    color: black;
+}

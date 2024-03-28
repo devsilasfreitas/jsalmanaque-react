@@ -11,6 +11,7 @@ import { useAuth } from "../../contexts/UserContext";
 import { useParams } from "react-router-dom";
 import { formatCode } from "../../functions/formatCode";
 import { CreateModalContext } from "../../layouts/AdminLayout";
+import { createCopyCode } from '../../functions/createCopyCode';
 
 export default function Form({ formObj }) {
     const form = useRef();
@@ -105,6 +106,12 @@ export default function Form({ formObj }) {
 
     useEffect(() => {
         hljs.highlightAll();
+        document.querySelectorAll('.copy-code').forEach((copyCode) => {
+            copyCode.addEventListener('click', () => {
+                navigator.clipboard.writeText(copyCode.dataset.code);
+                createModal('success', 'Copiado!', 'Conteúdo copiado com sucesso!');
+            });
+        });
     }, [htmlContent, cssContent]);
 
     const handleSubmit = async (event) => {
@@ -235,7 +242,7 @@ export default function Form({ formObj }) {
 
             <hr className={styles.hr} />
 
-            <div id="preview" className={styles.preview} dangerouslySetInnerHTML={{__html: `<style>${cssContent}</style><main>${formatCode(htmlContent, true)}</main>`}}></div>
+            <div id="preview" className={styles.preview} dangerouslySetInnerHTML={{__html: `<style>${cssContent}</style><main>${createCopyCode(formatCode(htmlContent, true))}</main>`}}></div>
         </div>
     )
 }

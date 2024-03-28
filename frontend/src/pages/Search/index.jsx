@@ -3,6 +3,8 @@ import { useContents } from "../../contexts/ContentsContext";
 import { useEffect, useState } from "react";
 import { makeSearch } from "../../functions/makeSearch";
 
+import Styles from "./Search.module.css";
+
 export default function Search() {
   const { contents } = useContents();
   const [results, setResults] = useState([]);
@@ -24,12 +26,16 @@ export default function Search() {
   }, [searchTerm]);
 
   return (
-    <div>
+    <div className={Styles.container}>
       {results?.map((content) => (
         <Link to={content.pagePath} key={content.id}>
-          <h3>{content.title}</h3>
-          <p> {content.module} - {content.language}</p>
-          <p>Atualizado por {content.userName} em {new Date(content?.updatedAt.seconds * 1000 + content?.updatedAt.nanoseconds / 1000000).toLocaleString()}</p>
+          <div className={Styles.card}>
+            <section className={Styles.titleSection}>
+              <h3 className={Styles.title}>{content.title}</h3>
+              <p className={Styles.date}>Atualizado por {content.userName} em {new Date(content?.updatedAt.seconds * 1000 + content?.updatedAt.nanoseconds / 1000000).toLocaleDateString()}</p>
+            </section>
+            <p className={Styles.subtitle}> {content.module} - {content.language}</p>
+          </div>
         </Link>
       ))}
     </div>

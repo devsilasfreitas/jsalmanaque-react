@@ -1,0 +1,28 @@
+.container {
+    padding: 20px;
+}
+
+.card {
+    margin: 10px 0;
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: 2px white solid;
+}
+
+.card:hover {
+    text-decoration: underline;
+}
+
+.titleSection {
+    display: grid;
+    grid-template-columns: 70% 30%;
+    margin-bottom: 7.5px;
+}
+
+.date {
+    text-align: right;
+}
+
+.subtitle {
+    font-weight: bold;
+}

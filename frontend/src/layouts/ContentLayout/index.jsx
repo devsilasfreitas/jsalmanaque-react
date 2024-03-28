@@ -9,6 +9,8 @@ const { Header, Content, Sider} = Layout;
 import "highlight.js/styles/github-dark.min.css";
 import styles from "./ContentLayout.module.css";
 import { SearchBox } from "../../components/SearchBox";
+import "./codeContainer.css";
+import { createCopyCode } from "../../functions/createCopyCode";
 
 export default function ContentLayout ()  {
     const { getContentsSorted, getContentByPagePath } = useContents();
@@ -16,6 +18,7 @@ export default function ContentLayout ()  {
     const [content, setContent] = useState();
     const [ loading, setLoading ] = useState(true);
     const { language, module, title } = useParams();
+    const [htmlContent, setHtmlContent] = useState();
 
     useEffect(() => {
         const contents = getContentsSorted(language);
@@ -23,6 +26,7 @@ export default function ContentLayout ()  {
         setContent(content);
         if (content && contents) {
             const contentsArray = Object.keys(contents);
+            setHtmlContent(createCopyCode(content.htmlContent));
             setItems(contentsArray.map((module) => {
                 return {
                     key: module,
@@ -30,6 +34,7 @@ export default function ContentLayout ()  {
                     children: contents[module].map((content) => {
                         return {
                             key: content.title,
+                            title: content.title,
                             label: <Link to={`/conteudos/${language}/${content.module}/${content.title}`}>{content.title}</Link>,
                         }
                     })
@@ -39,7 +44,14 @@ export default function ContentLayout ()  {
         }
     }, [getContentsSorted, getContentByPagePath, language, module, title]);
 
-    useEffect(() => hljs.highlightAll(), [content]);
+    useEffect(() => {
+        hljs.highlightAll();
+        document.querySelectorAll(".copy-code").forEach((button) => {
+            button.addEventListener("click", (event) => {
+                navigator.clipboard.writeText(event.target.dataset.code);
+            });
+        });
+    }, [content]);
 
     const [collapsed, setCollapsed] = useState(false);
     const {
@@ -63,13 +75,13 @@ export default function ContentLayout ()  {
                 />
             ) : (
                 <>
-                    <Sider trigger={null} collapsible collapsed={collapsed} hidden={collapsed}>
+                    <Sider trigger={null} collapsible collapsed={collapsed} width={'20vw'} hidden={collapsed}>
                         <div className="demo-logo-vertical" />
                         <Menu
                             theme="dark"
                             mode="inline"
                             selectedKeys={content.title}
-                            defaultOpenKeys={content.module}
+                            defaultOpenKeys={[content.module]}
                             items={items}
                         />
                     </Sider>
@@ -131,7 +143,7 @@ export default function ContentLayout ()  {
                                 )}
                             </div>
                         </section>
-                        <main dangerouslySetInnerHTML={{__html: content.htmlContent}}></main>
+                        <main dangerouslySetInnerHTML={{__html: `<style>${content.cssContent}</style>${htmlContent}`}}></main>
                         <section style={{display: 'flex', justifyContent: 'space-between', margin: '20px 0'}}>
                             <div style={{width: '50%'}}>
                                 {content?.backPage && (

@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Routes } from 'react-router';
 import RootLayout from './layouts/RootLayout';
 import Search from './pages/Search';
-import Home from './pages/Home';
+import { Home } from './pages/Home';
 import Login from './pages/Login/';
 import AdminLayout from './layouts/AdminLayout';
 import Admin from './pages/Admin';
@@ -16,14 +16,16 @@ import Content from './pages/Contents/index.jsx';
 import Sobre from './pages/Sobre/index.jsx';
 import { useAuth } from './contexts/UserContext.jsx';
 import { Link } from 'react-router-dom';
+import { Spin } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 
 export const Router = () => {
-  const { isAuthenticated } = useAuth();
+  const {  user } = useAuth();
 
   return (
     <Routes>
       <Route>
-        {isAuthenticated ? (
+        {user ? (
           <>
             <Route element={<AdminLayout />}>
                 <Route path="/admin" element={<Admin />} />
@@ -47,10 +49,25 @@ export const Router = () => {
             <Route path="/conteudos/:language/:module/:title" element={<Content />} />
         </Route>
         <Route path='*' element={
+          user === undefined ? (
+            <Spin
+                indicator={
+                <LoadingOutlined
+                    style={{
+                    fontSize: 24,
+                    }}
+                    spin
+                />
+                }
+                fullscreen
+                tip="Carregando..."
+            />
+          ) : (
             <>
                 <div>404 not found</div>
                 <Link to="/">Voltar para a Home</Link>
             </>
+          )
             } />
       </Route>
     </Routes>

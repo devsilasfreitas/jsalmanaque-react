@@ -1,6 +1,4 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { useAuth } from "../../contexts/UserContext";
-import { updateProfile } from "firebase/auth";
 import { useName } from "../../layouts/AdminLayout";
 import { contentsFunctions } from "../../functions/contentsFunctions";
 import { useContents } from "../../contexts/ContentsContext";

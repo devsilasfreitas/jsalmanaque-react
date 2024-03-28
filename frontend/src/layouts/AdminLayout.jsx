@@ -2,9 +2,10 @@ import { Outlet } from "react-router-dom";
 import AdminHeader from "../components/AdminHeader";
 import { useAuth } from "../contexts/UserContext";
 import { createContext, useState, useRef } from "react";
-import { Button, Modal, notification } from "antd";
+import { Button, Input, Modal, notification } from "antd";
 import { updateProfile } from "firebase/auth";
 import { updateUserName } from "../functions/updateUserName";
+import { UserOutlined } from "@ant-design/icons";
 
 export const useName = createContext();
 
@@ -57,13 +58,13 @@ export default function AdminLayout () {
     const displayNameInput = useRef();
     const showEditDisplayName = (displayName) => {
         if (displayName) {
-            createModal('confirm', 'Editar Nome', (<><input type="text" defaultValue={displayName} ref={displayNameInput} /></>), {
+            createModal('confirm', 'Editar Nome', (<><Input minLength={2} prefix={<UserOutlined />} defaultValue={displayName} ref={displayNameInput} /></>), {
                 footer: (_) => (
                     <Button type="primary" onClick={() => onClick(displayNameInput.current?.value)}>Enviar</Button>
                 ),
             });
         } else {
-            createModal('confirm', 'Criar Nome', (<><input type="text" minLength={2} ref={displayNameInput} /></>), {
+            createModal('confirm', 'Criar Nome', (<><Input minLength={2} prefix={<UserOutlined />} ref={displayNameInput} /></>), {
                 footer: (_) => (
                     <Button type="primary" onClick={() => onClick(displayNameInput.current?.value)}>Enviar</Button>
                 ),
