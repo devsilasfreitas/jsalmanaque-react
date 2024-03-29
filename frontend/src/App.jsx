@@ -5,16 +5,19 @@ import { ContentsContextProvider } from "./contexts/ContentsContext";
 import { AuthProvider } from "./contexts/UserContext";
 
 import './App.css'
+import { PopUpsProvider } from "./contexts/PopUpsContext";
 
 export default function App() {
 
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <ContentsContextProvider>
-          <Router />
-        </ContentsContextProvider>
-      </BrowserRouter>
+      <PopUpsProvider>
+        <BrowserRouter>
+          <ContentsContextProvider>
+            <Router />
+          </ContentsContextProvider>
+        </BrowserRouter>
+      </PopUpsProvider>
     </AuthProvider>
   );
 }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useContents } from "../../contexts/ContentsContext";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { Layout, Menu, theme, Button, Spin } from 'antd';
 import hljs from "highlight.js";
 import { MenuFoldOutlined, MenuUnfoldOutlined, LoadingOutlined, ArrowLeftOutlined, ArrowRightOutlined } from '@ant-design/icons';
@@ -11,6 +11,7 @@ import styles from "./ContentLayout.module.css";
 import { SearchBox } from "../../components/SearchBox";
 import "./codeContainer.css";
 import { createCopyCode } from "../../functions/createCopyCode";
+import { usePopUps } from "../../contexts/PopUpsContext";
 
 export default function ContentLayout ()  {
     const { getContentsSorted, getContentByPagePath } = useContents();
@@ -19,12 +20,14 @@ export default function ContentLayout ()  {
     const [ loading, setLoading ] = useState(true);
     const { language, module, title } = useParams();
     const [htmlContent, setHtmlContent] = useState();
+    const { createNotification } = usePopUps();
 
     useEffect(() => {
         const contents = getContentsSorted(language);
         const content = getContentByPagePath(`/conteudos/${language}/${module}/${title}`);
         setContent(content);
         if (content && contents) {
+            document.title = `${content.title} - JS Almanaque`
             const contentsArray = Object.keys(contents);
             setHtmlContent(createCopyCode(content.htmlContent));
             setItems(contentsArray.map((module) => {
@@ -49,6 +52,7 @@ export default function ContentLayout ()  {
         document.querySelectorAll(".copy-code").forEach((button) => {
             button.addEventListener("click", (event) => {
                 navigator.clipboard.writeText(event.target.dataset.code);
+                createNotification('success', 'Copiado!', 'Código copiado com sucesso!');
             });
         });
     }, [content]);

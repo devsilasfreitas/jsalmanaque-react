@@ -1,45 +1,22 @@
 import { Outlet } from "react-router-dom";
 import AdminHeader from "../components/AdminHeader";
 import { useAuth } from "../contexts/UserContext";
-import { createContext, useState, useRef } from "react";
-import { Button, Input, Modal, notification } from "antd";
+import { createContext, useState, useRef, useEffect } from "react";
+import { Button, Input, Modal } from "antd";
 import { updateProfile } from "firebase/auth";
 import { updateUserName } from "../functions/updateUserName";
 import { UserOutlined } from "@ant-design/icons";
+import { usePopUps } from "../contexts/PopUpsContext";
 
 export const useName = createContext();
-
-const configModal = (title, content, otherProps) => ({
-    title,
-    content: (
-        <>
-        {content}
-        <br />
-        </>
-    ),
-    centered: true,
-    ...otherProps,
-});
-
-const configNotification = (message, description) => ({
-        message,
-        description,
-        placement: 'bottomRight',
-});
-
-export const CreateModalContext = createContext(undefined);
 
 export default function AdminLayout () {
     const {user} = useAuth();
     const [displayName, setDisplayName] = useState(user.displayName);
 
-    const [modal, modalHolder] = Modal.useModal();
+    document.title =`Painel do Admin ${user.displayName}`
 
-    const [api, notificationHolder] = notification.useNotification();
-
-    const openNotificationWithIcon = (type, message, description) => {
-    api[type](configNotification(message, description));
-    };
+    const { createModal, createNotification } = usePopUps();
 
     const onClick = (newDisplayName) => {
         const oldDisplayName = user.displayName;
@@ -51,39 +28,37 @@ export default function AdminLayout () {
         }).catch((error) => createModal('error', 'Erro!', `Erro ao atualizar o nome: ${error.message}`));
     }
 
-    const createModal = (type, title, content, otherProps) => {
-        modal[type](configModal(title, content, otherProps));
-    };
-
     const displayNameInput = useRef();
     const showEditDisplayName = (displayName) => {
         if (displayName) {
             createModal('confirm', 'Editar Nome', (<><Input minLength={2} prefix={<UserOutlined />} defaultValue={displayName} ref={displayNameInput} /></>), {
                 footer: (_) => (
-                    <Button type="primary" onClick={() => onClick(displayNameInput.current?.value)}>Enviar</Button>
+                    <Button type="primary" onClick={() => onClick(displayNameInput.current?.input?.value)}>Enviar</Button>
                 ),
             });
         } else {
             createModal('confirm', 'Criar Nome', (<><Input minLength={2} prefix={<UserOutlined />} ref={displayNameInput} /></>), {
                 footer: (_) => (
-                    <Button type="primary" onClick={() => onClick(displayNameInput.current?.value)}>Enviar</Button>
+                    <Button type="primary" onClick={() => onClick(displayNameInput.current?.input?.value)}>Enviar</Button>
                 ),
             });
         }
     };
 
+    useEffect(() => {
+        setDisplayName(displayName);
+        displayName && createNotification("info", "Bem vindo!", `Bem vindo novamente admin ${displayName}!`);
+    }, []);
+
     return (
         <div>
-            <CreateModalContext.Provider value={{createModal, openNotificationWithIcon, showEditDisplayName}}>
-                <AdminHeader displayName={displayName}/>
-                <main>
-                    {notificationHolder}
-                    <useName.Provider value={[displayName, setDisplayName]}>
-                        <Outlet />
-                    </useName.Provider>
-                    {modalHolder}
-                </main>
-            </CreateModalContext.Provider>
+            <AdminHeader displayName={displayName} showEditDisplayName={showEditDisplayName} />
+            {!displayName && showEditDisplayName(null)}
+            <section>
+                <useName.Provider value={[displayName, setDisplayName]}>
+                    <Outlet />
+                </useName.Provider>
+            </section>
         </div>
     )
 }

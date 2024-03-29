@@ -3,9 +3,9 @@ import { useContents } from "../../../contexts/ContentsContext";
 import { updateOrderPages } from "../../../functions/updateOrderPages";
 import { db } from "../../../config/firebase";
 import { Popconfirm, Button } from 'antd';
-import { useState, useContext } from "react";
-import { CreateModalContext } from "../../../layouts/AdminLayout";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { usePopUps } from "../../../contexts/PopUpsContext";
 
 export default function Excluir ({id}) {
     //TODO: trocar os notifications por modals
@@ -15,7 +15,7 @@ export default function Excluir ({id}) {
 
     const navigate = useNavigate();
 
-    const { createModal } = useContext(CreateModalContext);
+    const { createModal } = usePopUps();
 
     const showPopconfirm = () => {
         setOpen(true);

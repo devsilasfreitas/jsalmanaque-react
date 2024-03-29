@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 export default function Login () {
     const navigate = useNavigate();
 
+    document.title = "Login do Admin JSAlmanaque";
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 

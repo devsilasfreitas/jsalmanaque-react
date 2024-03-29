@@ -1,14 +1,14 @@
 import { collection, deleteDoc, getDocs } from "firebase/firestore";
 import { db } from "../../../config/firebase";
 import { useContext, useState } from "react";
-import { CreateModalContext } from "../../../layouts/AdminLayout";
 import { Popconfirm, Button } from "antd";
+import { usePopUps } from "../../../contexts/PopUpsContext";
 
 export const ExcluirTudo = () => {
     const [open, setOpen] = useState(false);
     const [confirmLoading, setConfirmLoading] = useState(false);
 
-    const { createModal } = useContext(CreateModalContext);
+    const { createModal } = usePopUps();
 
     const showPopconfirm = () => {
         setOpen(true);

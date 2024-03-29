@@ -3,15 +3,15 @@ import "highlight.js/styles/github-dark.min.css";
 
 import hljs from "highlight.js";
 import Editor from "@monaco-editor/react"
-import { useState, useRef, useEffect, useContext } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useContents } from "../../contexts/ContentsContext";
 import { contentsFunctions } from "../../functions/contentsFunctions";
 import { sendForm } from "../../functions/sendForm";
 import { useAuth } from "../../contexts/UserContext";
 import { useParams } from "react-router-dom";
 import { formatCode } from "../../functions/formatCode";
-import { CreateModalContext } from "../../layouts/AdminLayout";
 import { createCopyCode } from '../../functions/createCopyCode';
+import { usePopUps } from '../../contexts/PopUpsContext';
 
 export default function Form({ formObj }) {
     const form = useRef();
@@ -37,7 +37,7 @@ export default function Form({ formObj }) {
     const [existsModule, setExistsModule] = useState(true);
     const [customCss, setCustomCss] = useState(false);
 
-    const { createModal } = useContext(CreateModalContext);
+    const { createModal, createNotification } = usePopUps();
 
     useEffect(() => {
         const fetchedLanguages = getLanguages();
@@ -109,7 +109,7 @@ export default function Form({ formObj }) {
         document.querySelectorAll('.copy-code').forEach((copyCode) => {
             copyCode.addEventListener('click', () => {
                 navigator.clipboard.writeText(copyCode.dataset.code);
-                createModal('success', 'Copiado!', 'Conteúdo copiado com sucesso!');
+                createNotification('success', 'Copiado!', 'Código copiado com sucesso!');
             });
         });
     }, [htmlContent, cssContent]);

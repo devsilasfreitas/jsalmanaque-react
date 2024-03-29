@@ -5,6 +5,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 
 export function Home () {
     const { user } = useAuth();
+    document.title = "JS Almanaque";
     return (
         <>
             <h1>Seja bem vindo ao JSAlmanaque</h1>

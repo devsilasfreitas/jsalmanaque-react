@@ -12,10 +12,15 @@
     border: 2px white solid;
     border-radius: 5px;
     padding: 5px 10px;
+    font-weight: bold;
 }
 
 .copy-code:hover {
     cursor: pointer;
     background-color: white;
     color: black;
+}
+
+code {
+    border-radius: 0 0 10px 10px;
 }
