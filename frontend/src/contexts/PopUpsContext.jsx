@@ -27,11 +27,11 @@ export const PopUpsProvider = ({ children }) => {
     const [api, notificationHolder] = notification.useNotification();
 
     const createNotification = (type, message, description) => {
-        api[type](configNotification(message, description));
+        return api[type](configNotification(message, description));
     };
 
     const createModal = (type, title, content, otherProps) => {
-        modal[type](configModal(title, content, otherProps));
+        return modal[type](configModal(title, content, otherProps));
     };
 
     return (

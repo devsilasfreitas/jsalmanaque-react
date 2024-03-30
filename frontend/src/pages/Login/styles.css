@@ -56,9 +56,12 @@
     font-size: 12px;
 }
 .forget{
-    font-size: 12px;
+    font-size: 14px;
     color: #5b6b8b;
     float: right;
+}
+.forget:hover {
+    color: #03e9f4;
 }
 .btn{
     position: relative;
@@ -156,4 +159,8 @@
     100%{
         bottom: 100%;
     }
+}
+
+.error {
+    color: red;
 }

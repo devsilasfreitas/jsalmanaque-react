@@ -32,9 +32,9 @@ export default function Search() {
           <div className={Styles.card}>
             <section className={Styles.titleSection}>
               <h3 className={Styles.title}>{content.title}</h3>
-              <p className={Styles.date}>Atualizado por {content.userName} em {new Date(content?.updatedAt.seconds * 1000 + content?.updatedAt.nanoseconds / 1000000).toLocaleDateString()}</p>
+              <p className={Styles.subtitle}> {content.module} - {content.language}</p>
             </section>
-            <p className={Styles.subtitle}> {content.module} - {content.language}</p>
+            <p className={Styles.date}>Atualizado por {content.userName} em {new Date(content?.updatedAt.seconds * 1000 + content?.updatedAt.nanoseconds / 1000000).toLocaleDateString()}</p>
           </div>
         </Link>
       ))}

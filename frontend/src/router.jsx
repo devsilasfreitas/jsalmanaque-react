@@ -6,7 +6,7 @@ import { Home } from './pages/Home';
 import Login from './pages/Login/';
 import AdminLayout from './layouts/AdminLayout';
 import Admin from './pages/Admin';
-import AdminContentLayout from './layouts/AdminContentLayout.jsx';
+import AdminContentLayout from './layouts/AdminContentLayout';
 import ContentLayout from './layouts/ContentLayout';
 import AllContents from './pages/Admin/AllContents/index.jsx';
 import ShowContent from './pages/Admin/AllContents/ShowContent/index.jsx';

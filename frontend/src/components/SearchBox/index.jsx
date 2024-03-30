@@ -2,7 +2,7 @@ import { Input } from 'antd';
 const { Search } = Input;
 
 
-export const SearchBox = ({style}) => {
+export const SearchBox = ({style, hidden}) => {
 
     const onSearch = (value) => {
         URLparameters.set('q', value);
@@ -10,7 +10,7 @@ export const SearchBox = ({style}) => {
     }
 
     return (
-        <form action="/search" method="get">
+        <form action="/search" method="get" hidden={hidden}>
             <Search
                 placeholder="Pesquisa..."
                 onSearch={onSearch}

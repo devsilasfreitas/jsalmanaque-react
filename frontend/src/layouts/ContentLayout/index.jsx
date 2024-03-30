@@ -57,10 +57,19 @@ export default function ContentLayout ()  {
         });
     }, [content]);
 
-    const [collapsed, setCollapsed] = useState(false);
+    const [breakpoint, setBreakpoint] = useState(true);
+    const [collapsed, setCollapsed] = useState(true);
+
+    useEffect(() => {
+        setCollapsed(breakpoint);
+    }, [breakpoint]);
+
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
+
+
+    // TODO: organize the styles in a file
 
     return (
         <Layout className={styles.layout}>
@@ -79,7 +88,7 @@ export default function ContentLayout ()  {
                 />
             ) : (
                 <>
-                    <Sider trigger={null} collapsible collapsed={collapsed} width={'20vw'} hidden={collapsed}>
+                    <Sider trigger={null} collapsible collapsed={collapsed} onBreakpoint={broken => setBreakpoint(broken)} breakpoint={'lg'} width={breakpoint ? 'calc(100vw - 74px)' : '20vw'} hidden={collapsed}>
                         <div className="demo-logo-vertical" />
                         <Menu
                             theme="dark"
@@ -98,7 +107,8 @@ export default function ContentLayout ()  {
                             display: "flex",
                             justifyContent: "space-between",
                             alignItems: "center",
-                            paddingRight: "16px",
+                            paddingRight: breakpoint ? '0px' : '16px',
+                            heigth: 'auto'
                         }}
                         >
                         <div style={{display: 'flex', gap: '10px', alignItems: 'center'}}>
@@ -107,15 +117,16 @@ export default function ContentLayout ()  {
                                 icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
                                 onClick={() => setCollapsed(!collapsed)}
                                 style={{
+                                padding: 0,
                                 fontSize: '16px',
                                 width: 64,
                                 height: 64,
                                 color: 'white',
                                 }}
                             />
-                            <Link to="/"><h2>JS Almanaque</h2></Link>
+                            <Link to="/"><h2 hidden={breakpoint && !collapsed} style={{width: "140px"}}>JS Almanaque</h2></Link>
                         </div>
-                        <SearchBox />
+                        <SearchBox hidden={breakpoint && !collapsed}  style={{width: breakpoint ? '80%' : '20vw', marginLeft: 'auto', marginRight: '10px'}} />
                         </Header>
                         <Content
                         style={{
@@ -124,6 +135,7 @@ export default function ContentLayout ()  {
                             minHeight: 280,
                             background: colorBgContainer,
                             borderRadius: borderRadiusLG,
+                            display: breakpoint && !collapsed ? 'none' : 'block',
                         }}
                         >
                         <h1>{content.title}</h1>
@@ -131,18 +143,18 @@ export default function ContentLayout ()  {
                             <h3>{content.module} - {content.language}</h3>
                             <h3>Atualizado por {content.userName} em {new Date(content?.updatedAt.seconds * 1000 + content?.updatedAt.nanoseconds / 1000000).toLocaleString()}</h3>
                         </section>
-                        <section style={{display: 'flex', justifyContent: 'space-between', margin: '20px 0'}}>
-                            <div style={{width: '50%'}}>
+                        <section style={{display: 'grid', gridTemplateColumns: '50% 50%', margin: '20px 0'}}>
+                            <div>
                                 {content?.backPage && (
                                     <Link to={content.backPage} style={{ display: 'inline-block', textAlign: 'center' }}>
-                                        <Button type="primary" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}><ArrowLeftOutlined /> Conteúdo Anterior</Button>
+                                        <Button type="primary" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}><ArrowLeftOutlined /> Anterior</Button>
                                     </Link>
                                 )}
                             </div>
-                            <div style={{width: '50%', textAlign: 'right'}}>
+                            <div style={{textAlign: 'right'}}>
                                 {content?.nextPage && (
                                     <Link to={content.nextPage}>
-                                        <Button type="primary">Conteúdo Posterior <ArrowRightOutlined /></Button>
+                                        <Button type="primary">Seguinte <ArrowRightOutlined /></Button>
                                     </Link>
                                 )}
                             </div>
@@ -152,14 +164,14 @@ export default function ContentLayout ()  {
                             <div style={{width: '50%'}}>
                                 {content?.backPage && (
                                     <Link to={content.backPage}>
-                                        <Button type="primary"><ArrowLeftOutlined /> Conteúdo Anterior</Button>
+                                        <Button type="primary"><ArrowLeftOutlined /> Anterior</Button>
                                     </Link>
                                 )}
                             </div>
                             <div style={{width: '50%', textAlign: 'right'}}>
                                 {content?.nextPage && (
                                     <Link to={content.nextPage}>
-                                        <Button type="primary">Conteúdo Posterior <ArrowRightOutlined /></Button>
+                                        <Button type="primary">Seguinte <ArrowRightOutlined /></Button>
                                     </Link>
                                 )}
                             </div>

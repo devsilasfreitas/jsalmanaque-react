@@ -8,6 +8,7 @@ import './App.css'
 import { PopUpsProvider } from "./contexts/PopUpsContext";
 
 export default function App() {
+  // TODO: make a responsive layout
 
   return (
     <AuthProvider>

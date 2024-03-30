@@ -14,6 +14,8 @@ export default function AdminLayout () {
     const {user} = useAuth();
     const [displayName, setDisplayName] = useState(user.displayName);
 
+    const [modal, setModal] = useState(undefined);
+
     document.title =`Painel do Admin ${user.displayName}`
 
     const { createModal, createNotification } = usePopUps();
@@ -31,7 +33,7 @@ export default function AdminLayout () {
     const displayNameInput = useRef();
     const showEditDisplayName = (displayName) => {
         if (displayName) {
-            createModal('confirm', 'Editar Nome', (<><Input minLength={2} prefix={<UserOutlined />} defaultValue={displayName} ref={displayNameInput} /></>), {
+            const modal = createModal('confirm', 'Editar Nome', (<><Input minLength={2} prefix={<UserOutlined />} defaultValue={displayName} ref={displayNameInput} /></>), {
                 footer: (_) => (
                     <Button type="primary" onClick={() => onClick(displayNameInput.current?.input?.value)}>Enviar</Button>
                 ),
@@ -51,7 +53,7 @@ export default function AdminLayout () {
     }, []);
 
     return (
-        <div>
+        <div style={{maxWidth: "100vw"}}>
             <AdminHeader displayName={displayName} showEditDisplayName={showEditDisplayName} />
             {!displayName && showEditDisplayName(null)}
             <section>

@@ -14,7 +14,7 @@ export default function AllContents () {
             
             <div>
                 <section style={{display: 'flex', justifyContent: 'flex-end', margin: '20px 50px'}}><ExcluirTudo /></section>
-                <table style={{borderCollapse: 'collapse', margin: '50px auto'}}>
+                <table style={{borderCollapse: 'collapse', margin: '50px auto', maxWidth: '100vw', overflow: 'scroll'}}>
                     <thead style={{backgroundColor: 'black', color: 'white', borderRadius: '10px'}}>
                         <tr>
                             <th>Titulo</th>
