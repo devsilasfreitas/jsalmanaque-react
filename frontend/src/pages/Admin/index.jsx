@@ -11,6 +11,7 @@ export default function Admin () {
     const [languages, setLanguages] = useState(0);
     const [modules, setModules] = useState(0);
     const [titles, setTitles] = useState(0);
+    const [access, setAccess] = useState(0);
     const { getLanguages, getAllModules, getAllTitles } = contentsFunctions(contents);
     
     useEffect(() => {

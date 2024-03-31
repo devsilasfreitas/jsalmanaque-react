@@ -1,9 +1,11 @@
-.code-container {
+.copy-code-container {
     background-color: #444444;
     color: white;
     padding: 7.5px 15px;
     border-radius: 10px 10px 0 0;
-    text-align: end;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .copy-code {

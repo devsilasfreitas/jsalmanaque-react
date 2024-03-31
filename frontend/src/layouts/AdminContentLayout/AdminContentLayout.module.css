@@ -13,6 +13,6 @@
 }
 
 .active {
-    border-bottom: 4px dodgerblue solid;
+    background-color: dodgerblue;
     border-radius: 10px;
 }

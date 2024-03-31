@@ -14,13 +14,16 @@
 
 .button {
     padding: 5px;
-    background-color: white;
-    color: black;
+    background-color: transparent;
+    color: white;
+    border: 1px white solid;
     border-radius: 5px;
 }
 
 .button:hover{
     cursor: pointer;
+    background-color: white;
+    color: black;
 }
 
 .nameContainer {
