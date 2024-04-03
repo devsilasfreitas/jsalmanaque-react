@@ -111,7 +111,7 @@ export default function ContentLayout ()  {
                             heigth: 'auto'
                         }}
                         >
-                        <div style={{display: 'flex', gap: '10px', alignItems: 'center'}}>
+                        <div style={{display: 'flex', gap: '10px', alignItems: 'center', justifyContent: 'space-between'}}>
                             <Button
                                 type="text"
                                 icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
@@ -124,9 +124,9 @@ export default function ContentLayout ()  {
                                 color: 'white',
                                 }}
                             />
-                            <Link to="/"><h2 hidden={breakpoint && !collapsed} style={{width: "140px"}}>JS Almanaque</h2></Link>
                         </div>
-                        <SearchBox hidden={breakpoint && !collapsed}  style={{width: breakpoint ? '80%' : '20vw', marginLeft: 'auto', marginRight: '10px'}} />
+                        <Link to="/"><h2 hidden={breakpoint && !collapsed} style={{width: "auto"}}>JS Almanaque</h2></Link>
+                        <SearchBox hidden={breakpoint && !collapsed}  style={{width: breakpoint ? '150px' : '20vw', marginRight: '10px'}} />
                         </Header>
                         <Content
                         style={{

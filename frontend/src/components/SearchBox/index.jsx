@@ -1,16 +1,18 @@
 import { Input } from 'antd';
+import { useRef } from 'react';
 const { Search } = Input;
 
 
 export const SearchBox = ({style, hidden}) => {
+    const form = useRef();
 
-    const onSearch = (value) => {
-        URLparameters.set('q', value);
-        window.location.search = URLparameters.toString();
+    const onSearch = () => {
+        form.current?.submit();
     }
 
+
     return (
-        <form action="/search" method="get" hidden={hidden}>
+        <form action="/search" method="get" ref={form} hidden={hidden}>
             <Search
                 placeholder="Pesquisa..."
                 onSearch={onSearch}
