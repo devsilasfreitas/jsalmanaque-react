@@ -12,6 +12,7 @@ import { SearchBox } from "../../components/SearchBox";
 import "./codeContainer.css";
 import { createCopyCode } from "../../functions/createCopyCode";
 import { usePopUps } from "../../contexts/PopUpsContext";
+import { NavLinks } from "../../components/NavLinks";
 
 export default function ContentLayout ()  {
     const { getContentsSorted, getContentByPagePath } = useContents();
@@ -41,7 +42,7 @@ export default function ContentLayout ()  {
                             label: <Link to={`/conteudos/${language}/${content.module}/${content.title}`}>{content.title}</Link>,
                         }
                     })
-                }
+                };
             }));
             setLoading(false);
         }
@@ -141,41 +142,11 @@ export default function ContentLayout ()  {
                         <h1>{content.title}</h1>
                         <section style={{display: 'flex', justifyContent: 'space-between', margin: '20px 0'}}>
                             <h3>{content.module} - {content.language}</h3>
-                            <h3>Atualizado por {content.userName} em {new Date(content?.updatedAt.seconds * 1000 + content?.updatedAt.nanoseconds / 1000000).toLocaleString()}</h3>
+                            <h3 style={{textAlign: "right"}}>Atualizado por {content.userName} em {new Date(content?.updatedAt.seconds * 1000 + content?.updatedAt.nanoseconds / 1000000).toLocaleString()}</h3>
                         </section>
-                        <section style={{display: 'grid', gridTemplateColumns: '50% 50%', margin: '20px 0'}}>
-                            <div>
-                                {content?.backPage && (
-                                    <Link to={content.backPage} style={{ display: 'inline-block', textAlign: 'center' }}>
-                                        <Button type="primary" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}><ArrowLeftOutlined /> Anterior</Button>
-                                    </Link>
-                                )}
-                            </div>
-                            <div style={{textAlign: 'right'}}>
-                                {content?.nextPage && (
-                                    <Link to={content.nextPage}>
-                                        <Button type="primary">Seguinte <ArrowRightOutlined /></Button>
-                                    </Link>
-                                )}
-                            </div>
-                        </section>
-                        <main dangerouslySetInnerHTML={{__html: `<style>${content.cssContent}</style>${htmlContent}`}}></main>
-                        <section style={{display: 'flex', justifyContent: 'space-between', margin: '20px 0'}}>
-                            <div style={{width: '50%'}}>
-                                {content?.backPage && (
-                                    <Link to={content.backPage}>
-                                        <Button type="primary"><ArrowLeftOutlined /> Anterior</Button>
-                                    </Link>
-                                )}
-                            </div>
-                            <div style={{width: '50%', textAlign: 'right'}}>
-                                {content?.nextPage && (
-                                    <Link to={content.nextPage}>
-                                        <Button type="primary">Seguinte <ArrowRightOutlined /></Button>
-                                    </Link>
-                                )}
-                            </div>
-                        </section>
+                        <NavLinks backPage={content.backPage} nextPage={content.nextPage}>
+                            <main dangerouslySetInnerHTML={{__html: `<style>${content.cssContent}</style>${htmlContent}`}}></main>
+                        </NavLinks>
                         </Content>
                     </Layout>
                 </>
