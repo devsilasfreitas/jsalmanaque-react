@@ -1,3 +1,8 @@
 .layout {
-    height: 100vh;
+    max-height: 100vh;
+    overflow: hidden;
+}
+
+.main {
+    font-size: 18px;
 }

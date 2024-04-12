@@ -73,7 +73,7 @@ export default function ContentLayout ()  {
     // TODO: organize the styles in a file
 
     return (
-        <Layout className={styles.layout}>
+        <Layout className={styles.layout} style={{height: !breakpoint && '100vh'}}>
             {loading ? (
                 <Spin
                     indicator={
@@ -137,6 +137,8 @@ export default function ContentLayout ()  {
                             background: colorBgContainer,
                             borderRadius: borderRadiusLG,
                             display: breakpoint && !collapsed ? 'none' : 'block',
+                            height: breakpoint ? 'calc(100vh - 64px - 10px - 48px - 48px' : '100%',
+                            overflow: 'auto',
                         }}
                         >
                         <h1>{content.title}</h1>
@@ -145,7 +147,7 @@ export default function ContentLayout ()  {
                             <h3 style={{textAlign: "right"}}>Atualizado por {content.userName} em {new Date(content?.updatedAt.seconds * 1000 + content?.updatedAt.nanoseconds / 1000000).toLocaleString()}</h3>
                         </section>
                         <NavLinks backPage={content.backPage} nextPage={content.nextPage}>
-                            <main dangerouslySetInnerHTML={{__html: `<style>${content.cssContent}</style>${htmlContent}`}}></main>
+                            <main dangerouslySetInnerHTML={{__html: `<style>${content.cssContent}</style>${htmlContent}`}} className={styles.main}></main>
                         </NavLinks>
                         </Content>
                     </Layout>
