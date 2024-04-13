@@ -10,7 +10,7 @@ export const Header = () => {
             <Link to='/'>
                 <h1>JS Almanaque</h1>
             </Link>
-            <SearchBox />
+            <SearchBox style={{maxWidth: "35vw"}}/>
         </header>
     )
 }

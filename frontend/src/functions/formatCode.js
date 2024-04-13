@@ -2,9 +2,10 @@ export function formatCode(text, convertOrDesconvert) {
     let replacement;
     let regex;
     if (convertOrDesconvert) {
-        regex = /<code (\w+)>\s{1,2}([\s\S]*?)<\/code>/g;
+        regex = /<code (\w+)>\s{0,2}([\s\S]*?)<\/code>/g;
         replacement = (match, language, content) => {
-            const modifiedContent = content?.replace(/</g, '&lt;')?.replace(/>/g, '&gt;');
+            const spaces = content?.match(/^\s+/)?.[0]?.length;
+            const modifiedContent = content?.replace(RegExp(`(?<=^)\\s{0,${spaces}}`, 'g'), '')?.replace(/</g, '&lt;')?.replace(/>/g, '&gt;')?.replace(RegExp(`(?<=\n)\\s{0,${spaces + 1}}`, 'g'), '');
             return `<pre><code class="language-${language}">${modifiedContent}</code></pre>`;
         } 
     } else {
