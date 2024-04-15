@@ -7,12 +7,12 @@ import { useEffect, useState } from "react";
 
 export default function ShowContent () {
     const { getContentById } = useContents();
-    const [content, setContent] = useState()
+    const [content, setContent] = useState();
     const { id } = useParams();
     useEffect(() => {
         let content = getContentById(id);
         setContent(content);
-    }, [id, getContentById])
+    }, [id, getContentById]);
 
     return (
         <>

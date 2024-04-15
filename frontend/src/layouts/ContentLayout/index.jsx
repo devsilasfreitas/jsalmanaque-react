@@ -89,7 +89,7 @@ export default function ContentLayout ()  {
                 />
             ) : (
                 <>
-                    <Sider trigger={null} collapsible collapsed={collapsed} onBreakpoint={broken => setBreakpoint(broken)} breakpoint={'lg'} width={breakpoint ? 'calc(100vw - 74px)' : '20vw'} hidden={collapsed}>
+                    <Sider trigger={null} collapsible collapsed={collapsed} onBreakpoint={broken => setBreakpoint(broken)} breakpoint={'lg'} width={breakpoint ? 'calc(100vw - 74px)' : '20vw'} style={{height: "100vh"}} hidden={collapsed}>
                         <div className="demo-logo-vertical" />
                         <Menu
                             theme="dark"
@@ -99,7 +99,7 @@ export default function ContentLayout ()  {
                             items={items}
                         />
                     </Sider>
-                    <Layout>
+                    <Layout style={{height: "100vh"}}>
                         <Header
                         style={{
                             padding: 0,
