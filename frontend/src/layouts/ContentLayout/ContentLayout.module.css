@@ -6,3 +6,8 @@
 .main {
     font-size: 18px;
 }
+
+.main * {
+    margin: .25em 0;
+}
+
