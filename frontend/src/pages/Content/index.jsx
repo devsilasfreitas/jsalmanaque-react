@@ -7,14 +7,14 @@ import { MenuFoldOutlined, MenuUnfoldOutlined, LoadingOutlined, ArrowLeftOutline
 const { Header, Content, Sider} = Layout;
 
 import "highlight.js/styles/github-dark.min.css";
-import styles from "./ContentLayout.module.css";
+import styles from "./Content.module.css";
 import { SearchBox } from "../../components/SearchBox";
 import "./codeContainer.css";
 import { createCopyCode } from "../../functions/createCopyCode";
 import { usePopUps } from "../../contexts/PopUpsContext";
 import { NavLinks } from "../../components/NavLinks";
 
-export default function ContentLayout ()  {
+export default function ContentPage ()  {
     const { getContentsSorted, getContentByPagePath } = useContents();
     const [items, setItems] = useState();
     const [content, setContent] = useState();

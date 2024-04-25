@@ -7,12 +7,11 @@ import Login from './pages/Login/';
 import AdminLayout from './layouts/AdminLayout';
 import Admin from './pages/Admin';
 import AdminContentLayout from './layouts/AdminContentLayout';
-import ContentLayout from './layouts/ContentLayout';
+import Content from './pages/Content';
 import AllContents from './pages/Admin/AllContents/index.jsx';
 import ShowContent from './pages/Admin/AllContents/ShowContent/index.jsx';
 import NewContent from './pages/Admin/AllContents/NewContent/index.jsx';
 import UpdateContent from './pages/Admin/AllContents/ShowContent/UpdateContent/index.jsx';
-import Content from './pages/Contents/index.jsx';
 import Sobre from './pages/Sobre/index.jsx';
 import { useAuth } from './contexts/UserContext.jsx';
 import { Link } from 'react-router-dom';
@@ -45,9 +44,7 @@ export const Router = () => {
             <Route path="/search" element={<Search />} />
             <Route path="/sobre" element={<Sobre />} />
         </Route>
-        <Route path="/conteudos" element={<ContentLayout />}>
-            <Route path="/conteudos/:language/:module/:title" element={<Content />} />
-        </Route>
+        <Route path="/conteudos/:language/:module/:title" element={<Content />} />
         <Route path='*' element={
           user === undefined ? (
             <Spin
